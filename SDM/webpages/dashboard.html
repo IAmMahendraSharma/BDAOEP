@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Student Data Manager</title>
+
+		<!-- Counter JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>	
+
+        <!-- Font Awesome CSS-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/v4-shims.css">
+
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <style>
+            i {
+                font-size: 20px;
+            }
+            i:hover{
+                color: red;
+            }
+            .modal-open .modal {
+                overflow-x: hidden;
+                overflow-y: hidden;
+            }
+        </style>
+	</head>
+
+    <body>
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/dashboard/"> Student Data Manager </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <a><button class="btn btn-outline-success" data-toggle="modal" data-target="#addNew" style="margin-right: 10px;">Add New</button></a>
+                    <a href="/logout/"><button class="btn btn-outline-info">Logout</button></a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <div>
+                <table class="table table-hover table-responsive">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">PEN</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Update Data</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in participants%}
+                            <tr>
+                                <td>{{participant.PEN}}</td>
+                                <td>{{participant.Name}}</td>
+                                <td>{{participant.Gender}}</td>
+                                <td>{{participant.Email}}</td>
+                                <td>{{participant.Mobile}}</td>
+                                <td>{{participant.Department}}</td>
+                                <td>{{participant.Semester}}</td>
+                                <td style="text-align: center;"><a data-toggle="modal" data-target="#update" onclick="updateData( '{{participant.PEN}}','{{participant.Name}}', '{{participant.Gender}}', '{{participant.Email}}', '{{participant.Mobile}}', '{{participant.Department}}', '{{participant.Semester}}')"><i class="far fa-edit"></i></a></td>
+                                <td style="text-align: center;"><a href="/delete?pid={{participant.Email}}"><i class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+		</div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h5>Add New Participant</h5>
+                        <form method="POST" action="/add/">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>PEN</label>
+                                <input type="mobile" name="pen" class="form-control" placeholder="000000000000" pattern="^[1-9][0-9]{11}$" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Name Surname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Male" id="Male" name="gender" checked>
+                                    <label class="form-check-label">Male</label>
+                                </div>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Female" id="Female" name="gender">
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="text" name="email" class="form-control" pattern="^[a-z0-9\.]{3,20}@[a-z]{3,20}[a-z\.]+$" placeholder="name@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="mobile" name="mobile" class="form-control" pattern="^[6-9][0-9]{9}$" placeholder="0000000000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department</label>
+                                <select class="form-control" name="department" required>
+                                    <option>Select Department</option>
+                                    <option>Chemical</option>
+                                    <option>Civil</option>
+                                    <option>Computer</option>
+                                    <option>Electrical</option>
+                                    <option>Mechnical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Semester</label>
+                                <select class="form-control" name="semester" required>
+                                    <option>Select Semester</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" data-dismiss="modal" aria-label="Close" value="Cancel">
+                                <input type="submit" value="Add Participant">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h5>Add New Participant</h5>
+                        <form method="POST" action="/update/">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>PEN</label>
+                                <input type="mobile" id="pen" name="pen" class="form-control" placeholder="000000000000" pattern="^[1-9][0-9]{11}$" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name Surname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Male" id="Male" name="gender" checked>
+                                    <label class="form-check-label">Male</label>
+                                </div>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Female" id="Female" name="gender">
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="text" id="email" name="email" class="form-control" pattern="^[a-z0-9\.]{3,20}@[a-z]{3,20}[a-z\.]+$" placeholder="name@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="mobile" id="mobile" name="mobile" class="form-control" pattern="^[6-9][0-9]{9}$" placeholder="0000000000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department</label>
+                                <select class="form-control" id="department" name="department" required>
+                                    <option>Select Department</option>
+                                    <option>Chemical</option>
+                                    <option>Civil</option>
+                                    <option>Computer</option>
+                                    <option>Electrical</option>
+                                    <option>Mechnical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Semester</label>
+                                <select class="form-control" id="semester" name="semester" required>
+                                    <option>Select Semester</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" data-dismiss="modal" aria-label="Close" value="Cancel">
+                                <input type="submit" value="Add Participant">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function updateData(pen, name, gender, email, mobile, department, semester) {
+                document.getElementById("pen").value = pen;
+                document.getElementById("name").value = name;
+                document.getElementById("email").value = email;
+                document.getElementById("mobile").value = mobile;
+                document.getElementById("semester").value = semester;
+                document.getElementById("department").value = department;
+                options = document.getElementsByName("gender");
+                for(i = 0; i < options.length; i++) {
+                    if(options[i].value == gender) {
+                        options[i].checked = true;
+                        break;
+                    }
+                }
+            }
+        </script>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    </body>
+</html>

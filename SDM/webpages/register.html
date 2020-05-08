@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Student Data Manager</title>
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	</head>
+
+	<body>
+		<div class="container" style="margin-top: 1%;">
+			<div class="row">
+				<div class="col-md-4 offset-md-4 ">
+					<div class="card">
+						<form class="card-body" method="POST" action="/register1/">
+                            <h3 style="text-align: center;">Register</h3>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Name Surname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Male" id="Male" name="gender" checked>
+                                    <label class="form-check-label">Male</label>
+                                </div>
+                                <div class="form-check  form-check-inline">
+                                    <input class="form-check-input" type="radio" value="Female" id="Female" name="gender">
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="text" name="email" class="form-control" pattern="^[a-z0-9\.]{3,20}@[a-z]{3,20}\.[a-z\.]+$" placeholder="name@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="mobile" name="mobile" class="form-control" pattern="^[6-9][0-9]{9}$" placeholder="0000000000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department</label>
+                                <select class="form-control" name="department" required>
+                                    <option>Select Department</option>
+                                    <option>Chemical</option>
+                                    <option>Civil</option>
+                                    <option>Computer</option>
+                                    <option>Electrical</option>
+                                    <option>Mechnical</option>
+                                </select>
+                            </div>
+							<div class="form-group">
+								<label>Password</label>
+								<input type="password" class="form-control" name="password" id="pass" placeholder="*******" required>
+							</div>
+							<div class="form-group">
+								<label>Confirm Password</label>
+								<input type="password" class="form-control" id="cnfpass" placeholder="*******" required>
+							</div>
+							<div class="form-group">
+				                <button type="submit" class="btn btn-primary float-right">Register</button>
+							</div>
+							<div class="form-group">
+								<a href="/"><label class="form-check-label">Login Now</label></a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+        </div>
+
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	</body>
+</html>
