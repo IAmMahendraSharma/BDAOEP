@@ -20,7 +20,7 @@ def login1(req):
     email = req.POST.get('email', 'email')
     password = req.POST.get('password', 'password')
     if Faculty.objects.filter(Email = email, Password = hash(password)):
-        return render(req, 'dashboard.html')
+        return redirect('../dashboard', dashboard)
     else:
         return render(req, 'index.html')
 
